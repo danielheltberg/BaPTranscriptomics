@@ -85,15 +85,15 @@ module load multiqc/1.27.1
 
 
 # C elegans
-fastqc -c 8 -o ~/sharedscratch/reads/celegans_reads/ ~/sharedscratch/reads/celegans_reads/*.fq.gz 
-multiqc -o ~/sharedscratch/reads/celegans_reads/trimmed_qc ~/sharedscratch/reads/celegans_reads/
+fastqc -o ~/sharedscratch/reads/celegans_reads/ ~/sharedscratch/reads/celegans_reads/*.fq.gz 
+multiqc ~/sharedscratch/reads/celegans_reads/
 
 
 # G morhua
 
 
-fastqc -c 8 -o ~/sharedscratch/reads/gmorhua_reads/ ~/sharedscratch/reads/gmorhua_reads/*.fq.gz 
-multiqc -o ~/sharedscratch/reads/gmorhua_reads/trimmed_qc ~/sharedscratch/reads/gmorhua_reads/
+fastqc -o ~/sharedscratch/reads/gmorhua_reads/ ~/sharedscratch/reads/gmorhua_reads/*.fq.gz 
+multiqc ~/sharedscratch/reads/gmorhua_reads/
 
 
 # examine the produced html files for read quality
@@ -126,15 +126,15 @@ trim_galore -j 8 -q 20 --illumina --paired -o trimmed ~/sharedscratch/reads/gmor
 
 
 # C elegans
-fastqc -c 8 -o ~/sharedscratch/reads/celegans_reads/trimmed_qc ~/sharedscratch/reads/celegans_reads/trimmed_qc/*.fq.gz 
-multiqc -o ~/sharedscratch/reads/celegans_reads/trimmed_report ~/sharedscratch/reads/celegans_reads/trimmed_qc/
+fastqc -o ~/sharedscratch/reads/celegans_reads/trimmed_qc ~/sharedscratch/reads/celegans_reads/trimmed_qc/*.fastq.gz 
+multiqc ~/sharedscratch/reads/celegans_reads/trimmed_qc/
 
 
 # G morhua
 
 
-fastqc -c 8 -o ~/sharedscratch/reads/gmorhua_reads/trimmed_qc ~/sharedscratch/reads/gmorhua_reads/trimmed_qc/*.fq.gz 
-multiqc -o ~/sharedscratch/reads/gmorhua_reads/trimmed_report ~/sharedscratch/reads/gmorhua_reads/trimmed_qc
+fastqc -o ~/sharedscratch/reads/gmorhua_reads/trimmed_qc ~/sharedscratch/reads/gmorhua_reads/trimmed_qc/*.fastq.gz 
+multiqc ~/sharedscratch/reads/gmorhua_reads/trimmed_qc
 
 
 # view trimmed html files to inspect if quality has improved
@@ -248,6 +248,7 @@ awk -F'\t' '{print $1, "Ensembl", "exon", $2, $3, ".", $4, ".", $5}' OFS="\t" ex
 
 
 featureCounts -a exons_elegans.flattened.gtf -T 8 -f -t exon -g gene_id -s 0 -M --fraction -O -o exoncountsele_test.txt ~/sharedscratch/reads/celegans_reads/bam/SRR*
+
 
 
 featureCounts -a exons_morhua.flattened.clean.gtf -T 8 -t exon -g gene_id -s 2 -M --fraction -T 8 -p --countReadPairs -B -C -O -o exoncountsmorhua_test ~/sharedscratch/reads/gmorhua_reads/bam2/SRR*
