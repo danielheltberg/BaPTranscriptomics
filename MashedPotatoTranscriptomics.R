@@ -254,7 +254,7 @@ rownames(mo) <- morhua$Geneid
 meta2<- data.frame(colnames(mo),Group = c("Control","0.01ug_BaP","1ug_BaP","Control","0.01ug_BaP","1ug_BaP","Control","0.01ug_BaP","1ug_BaP","Control","0.01ug_BaP","1ug_BaP","Control","0.01ug_BaP","1ug_BaP","Control","0.01ug_BaP","1ug_BaP","Control","1ug_BaP","Control","0.01ug_BaP"), ind = c("a","a","a","b","b","b","c","c","c","d","d","d","e","e","e","f","f","f","g","g","h","h"))
 dds2 <- DESeqDataSetFromMatrix(countData=mo,
                                colData=meta2,
-                               design=~Group +ind)
+                               design=~ind + Group)
 smallestGroupSizeMo <- 3
 keep <- rowSums(counts(dds2) >= 10) >= smallestGroupSizeMo
 dds2 <- dds2[keep,]
@@ -333,8 +333,8 @@ mode(dexmo) <- "integer"
 rownames(dexmo) <- dexmorhua$TranscriptID
 
 dxdmo0.01 <- DEXSeqDataSet(countData = dexmo[,c(1,2,4,5,7,8,10,11,13,14,16,17,19,21,22)], #featureCounts output
-                           sampleData = meta2[c(1,2,4,5,7,8,10,11,13,14,16,17,19,21,22),-3], #same as de
-                           design=~sample + exon + group:exon, #but it's actually transcript
+                           sampleData = meta2[c(1,2,4,5,7,8,10,11,13,14,16,17,19,21,22),], #same as de
+                           design=~ind + sample + exon + group:ind + group:exon, #but it's actually transcript
                            featureID = Transcript, #the transcripts
                            groupID = Gene) #genes they belong to
 system.time({
@@ -353,7 +353,7 @@ subset(dxr.g_mor_dex0.01, qval_mor_dex0.01 < 0.05)
 #### now 0 and 1
 dxdmo1 <- DEXSeqDataSet(countData = dexmo[,c(1,3,4,6,7,9,10,12,13,15,16,18,19,20,21)], #featureCounts output
                         sampleData = meta2[c(1,3,4,6,7,9,10,12,13,15,16,18,19,20,21),], #same as de
-                        design=~sample + exon + group:exon, #but it's actually transcript
+                        design=~ind + sample + exon + group:ind + group:exon, #but it's actually transcript
                         featureID = Transcript, #the transcripts
                         groupID = Gene) #genes they belong to
 
@@ -374,7 +374,7 @@ meta2_num
 meta2_num_dex <- meta2_num[,c(1,2)]
 dex_num_mo <- DEXSeqDataSet(countData=dexmo,
                             sampleData=meta2_num_dex,
-                            design=~sample+exon+group:exon,
+                            design=~ind + sample + exon + group:ind + group:exon,
                             featureID = Transcript,
                             groupID = Gene)
 
