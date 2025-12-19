@@ -501,8 +501,22 @@ ups_elegans[ups_elegans$gene %in% dxrgex020sig$X,7] <- 1
 ups_elegans[ups_elegans$gene %in% dxrgexnumsig$X,8] <- 1
 
 upset(ups_elegans, nset=7, order.by = "freq", point.size = 3, text.scale = 1.3, 
-      sets.bar.color = c("lightsalmon","lightsalmon","firebrick1","firebrick1","olivedrab1","olivedrab1","lightsalmon"),
-      queries = list(list(query = intersects, params = list("Set1","Set2"), color = "red", active = T)))
+      sets.bar.color = c("gold2","maroon1","gold2","maroon1",
+      "gold2","maroon1","purple"),sets = c("Gene_0vs5","Gene_0vs20", 
+      "Gene_Linear","Transcript_Linear","Exon_0vs5","Exon_0vs20","Exon_Linear"),
+      queries = list(list(query = intersects, params = list("Exon_Linear",
+      "Gene_Linear"),color = "skyblue", active = T), list(query = intersects, 
+      params = list("Transcript_Linear","Exon_Linear"),color = "blue", active = T),
+      list(query = intersects,params = list("Exon_0vs5","Gene_Linear"),color = "skyblue", active = T),
+      list(query = intersects,params = list("Exon_0vs5","Gene_0vs5","Exon_0vs20","Gene_0vs20","Gene_Linear"),
+      color ="skyblue", active = T), list(query = intersects, params = list("Gene_0vs20",
+      "Gene_Linear"),color = "gold2", active = T), list(query = intersects, 
+      params = list("Gene_0vs20","Gene_0vs5","Gene_Linear"),color = "gold2", active = T),
+      list(query = intersects, params = list("Exon_0vs20","Exon_0vs5","Exon_Linear"),color = 
+      "maroon1", active = T), list(query = intersects, params = list("Exon_0vs20",
+      "Exon_Linear"),color = "maroon1", active = T), list(query = intersects, params = list("Exon_0vs5",
+      "Exon_0vs20"), color = "maroon1", active = T), list(query = intersects, params = list("Gene_0vs5","Gene_0vs20"),
+      color = "gold2", active = T)), set_size.show = T)
 
 
 sample.data.morhua <- read.table("morhua_transcript_metadata.tsv")
@@ -526,3 +540,11 @@ upset(ups_morhua, sets.bar.color=c("lightsalmon","firebrick1","lightsalmon"), or
       point.size = 3, text.scale = 1.3)
 
 grid.arrange(upset_elegans, upset_morhua)
+
+EnhancedVolcano(res5,lab = "", x = 'log2FoldChange', y='padj',
+                gridlines.major = F, gridlines.minor = F, pCutoff = 0.05, labSize = 3)
+EnhancedVolcano(res20,lab = "", x = 'log2FoldChange', y='padj', 
+                gridlines.major = F, gridlines.minor = F, pCutoff = 0.05, ylim = c(0,100), xlim = c(-5,7),
+                labSize = 5)
+EnhancedVolcano(res1,lab = "", x = 'log2FoldChange', y='padj', ylim = c(0,25), xlim = c(-2.5,7.5),
+                gridlines.major = F, gridlines.minor = F, pCutoff = 0.05, labSize = 3, legendPosition = "bottom")
